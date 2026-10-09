@@ -4,7 +4,6 @@
 // npm run preview  — собрать и раздать dist/ как на GitHub Pages
 import * as esbuild from "esbuild";
 import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
-import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -26,6 +25,9 @@ const options = {
   define: { "process.env.NODE_ENV": JSON.stringify(isDev ? "development" : "production") },
   logLevel: "info",
   legalComments: "none",
+  // разделение кода: тяжёлые части (three.js) грузятся отдельным файлом только по запросу
+  splitting: true,
+  chunkNames: "chunks/[name]-[hash]",
 };
 
 async function writeHtml(assets) {
@@ -44,16 +46,15 @@ async function build() {
   await rm(dist, { recursive: true, force: true });
   await mkdir(path.join(dist, "assets"), { recursive: true });
   await copyPublic();
-  const result = await esbuild.build({ ...options, outdir: path.join(dist, "assets"), metafile: true, write: false });
+  const result = await esbuild.build({ ...options, outdir: path.join(dist, "assets"), entryNames: "[name]-[hash]", metafile: true });
   const assets = {};
-  for (const file of result.outputFiles) {
-    const ext = path.extname(file.path);
-    const hash = createHash("sha256").update(file.contents).digest("hex").slice(0, 10);
-    const name = `app-${hash}${ext}`;
-    await writeFile(path.join(dist, "assets", name), file.contents);
-    if (ext === ".js") assets.js = `./assets/${name}`;
-    if (ext === ".css") assets.css = `./assets/${name}`;
+  for (const [file, info] of Object.entries(result.metafile.outputs)) {
+    // точка входа именно приложения: динамические импорты (three.js) тоже помечены как entryPoint
+    if (info.entryPoint !== "src/main.jsx") continue;
+    assets.js = "./" + path.relative(dist, path.join(root, file)).split(path.sep).join("/");
+    if (info.cssBundle) assets.css = "./" + path.relative(dist, path.join(root, info.cssBundle)).split(path.sep).join("/");
   }
+  if (!assets.js || !assets.css) throw new Error("Сборка: не найден основной JS/CSS приложения");
   await writeHtml(assets);
   // GitHub Pages: не обрабатывать сайт Jekyll'ом
   await writeFile(path.join(dist, ".nojekyll"), "");

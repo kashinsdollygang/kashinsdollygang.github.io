@@ -8,7 +8,12 @@ import { MotionScene } from "./components/MotionScene.jsx";
 import { ProjectsSection } from "./components/ProjectsSection.jsx";
 import { ServicesSection } from "./components/ServicesSection.jsx";
 import { TeamSection } from "./components/TeamSection.jsx";
+import { ThreeLab } from "./components/ThreeLab.jsx";
+import { isThreeLabEnabled } from "./data/three.js";
 import { gsap, REDUCED_MOTION } from "./lib/motion.js";
+
+// тестовая 3D-сцена — только по ?lab=3d (см. src/data/three.js)
+const SHOW_THREE_LAB = typeof window !== "undefined" && isThreeLabEnabled();
 
 export function App() {
   // Заголовки секций раскрываются через маску, как титры. Один раз на элемент.
@@ -46,6 +51,7 @@ export function App() {
         <Hero />
         <FleetSection />
         <MotionScene />
+        {SHOW_THREE_LAB ? <ThreeLab /> : null}
         <ServicesSection />
         <ProjectsSection />
         <TeamSection />

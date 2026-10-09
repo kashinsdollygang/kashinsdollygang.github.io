@@ -9,6 +9,7 @@ import "./styles/motion.css";
 import "./styles/services.css";
 import "./styles/projects-team.css";
 import "./styles/contacts.css";
+import "./styles/three.css";
 
 // Вернуться к началу при перезагрузке, если нет якоря (иначе GSAP-сцены стартуют с середины)
 if ("scrollRestoration" in history && !location.hash) history.scrollRestoration = "manual";
