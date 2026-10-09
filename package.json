@@ -11,7 +11,7 @@
     "check": "node scripts/check-data.mjs"
   },
   "dependencies": {
-    "gsap": "^3.13.0",
+    "gsap": "3.15.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
