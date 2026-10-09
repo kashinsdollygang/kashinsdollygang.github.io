@@ -1,0 +1,24 @@
+{
+  "name": "kashins-dolly-gang",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Сайт операторской команды KASHIN'S DOLLY GANG",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/build.mjs --serve",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/build.mjs --preview",
+    "check": "node scripts/check-data.mjs"
+  },
+  "dependencies": {
+    "gsap": "^3.13.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

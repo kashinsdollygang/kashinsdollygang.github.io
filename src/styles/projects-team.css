@@ -1,0 +1,262 @@
+/* Проекты и команда */
+
+.projects {
+  border-top: var(--hairline-soft);
+}
+
+/* --- заполненная фильмография: асимметричная сетка афиш --- */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 28px);
+  align-items: end;
+}
+.project-card {
+  grid-column: span 3;
+}
+.project-card--v1 {
+  grid-column: span 4;
+}
+.project-card--v2 {
+  grid-column: span 3;
+  margin-bottom: 8%;
+}
+.project-card__link {
+  position: relative;
+  display: grid;
+  gap: 12px;
+}
+.project-card__poster {
+  display: block;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  background: var(--surface);
+}
+.project-card__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ease-out);
+}
+a.project-card__link:hover img,
+a.project-card__link:focus-visible img {
+  transform: scale(1.04);
+}
+.project-card__meta {
+  display: grid;
+  gap: 4px;
+}
+.project-card__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.4rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.project-card__info {
+  display: flex;
+  gap: 12px;
+  font-size: var(--fs-small);
+  color: var(--text-3);
+}
+.project-card__role {
+  font-size: var(--fs-small);
+  color: var(--text-2);
+}
+.project-card__go {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgb(5 6 7 / 0.7);
+}
+@media (max-width: 899px) {
+  .project-card,
+  .project-card--v1,
+  .project-card--v2 {
+    grid-column: span 6;
+    margin: 0;
+  }
+}
+
+/* --- пустое состояние --- */
+.projects-empty {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: center;
+}
+.projects-empty__strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+.projects-empty__strip li:nth-child(odd) {
+  transform: translateY(-14%);
+}
+.projects-empty__frame {
+  position: relative;
+  display: grid;
+  align-items: end;
+  aspect-ratio: 2 / 3;
+  padding: 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-sm);
+  background: linear-gradient(160deg, var(--elevated), var(--bg) 70%);
+  overflow: hidden;
+}
+.projects-empty__frame::before {
+  /* перфорация киноплёнки */
+  content: "";
+  position: absolute;
+  inset: 8px 6px auto;
+  height: 6px;
+  background: repeating-linear-gradient(90deg, var(--border-soft) 0 8px, transparent 8px 14px);
+}
+.projects-empty__type {
+  font-family: var(--font-display);
+  font-weight: 760;
+  text-transform: uppercase;
+  font-size: clamp(1rem, 1.6vw, 1.4rem);
+  color: var(--text-3);
+  line-height: 1;
+}
+.projects-empty__text {
+  display: grid;
+  gap: 18px;
+  justify-items: start;
+}
+.projects-empty__text h3 {
+  font-family: var(--font-display);
+  font-weight: 820;
+  font-size: var(--fs-h3);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+.projects-empty__text p {
+  color: var(--text-2);
+  max-width: 46ch;
+}
+@media (max-width: 899px) {
+  .projects-empty {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 520px) {
+  .projects-empty__strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .projects-empty__strip li:nth-child(n + 4) {
+    display: none;
+  }
+}
+
+/* --- команда --- */
+.team {
+  background: linear-gradient(to bottom, var(--bg), #08090b);
+}
+.team__about {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 96px);
+  margin-bottom: clamp(48px, 7vw, 96px);
+}
+.team__lead p {
+  font-size: clamp(1.3rem, 2.1vw, 1.9rem);
+  line-height: 1.32;
+  max-width: 30ch;
+}
+.team__points {
+  display: grid;
+  border-top: var(--hairline);
+}
+.team__points li {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: var(--hairline);
+}
+.team__points h3 {
+  font-family: var(--font-display);
+  font-weight: 780;
+  text-transform: uppercase;
+  font-size: 1.4rem;
+  line-height: 1.05;
+}
+.team__points p {
+  color: var(--text-2);
+  font-size: var(--fs-small);
+}
+
+.team__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 24px);
+}
+.member {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+.member__photo {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  background: var(--surface);
+  margin-bottom: 8px;
+}
+.member__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.05);
+}
+.member__name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+.member__role {
+  color: var(--text-3);
+  font-size: var(--fs-small);
+}
+.member--empty .member__photo {
+  border: 1px dashed var(--border);
+  background: radial-gradient(70% 50% at 50% 35%, var(--elevated), var(--bg));
+}
+.member--empty .member__name {
+  color: var(--text-2);
+}
+.member__slot {
+  position: absolute;
+  left: 14px;
+  bottom: 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2.6rem;
+  color: var(--border);
+}
+
+@media (max-width: 899px) {
+  .team__about {
+    grid-template-columns: 1fr;
+  }
+  .team__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .team__points li {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}

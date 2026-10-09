@@ -1,0 +1,73 @@
+/* Дизайн-токены KASHIN'S DOLLY GANG */
+
+@font-face {
+  font-family: "Sofia Sans Extra Condensed";
+  src: url("../fonts/sofia-sans-extra-condensed-var.woff") format("woff");
+  font-weight: 1 1000;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Golos Text";
+  src: url("../fonts/golos-text-var.woff") format("woff");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* палитра */
+  --bg: #050607;
+  --surface: #0b0d10;
+  --elevated: #111418;
+  --border: #30343a;
+  --border-soft: #1b1e23;
+  --text: #f4f4f2;
+  --text-2: #a5a9ae;
+  --text-3: #80858b; /* muted, контраст ≥ 4.5:1 на --bg */
+  --rec: #ff3038;
+  --rec-soft: rgb(255 48 56 / 0.14);
+  --warm: #d99a5b; /* тон практического света с фотографий — только для бликов */
+
+  /* шрифты */
+  --font-display: "Sofia Sans Extra Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --font-body: "Golos Text", "Helvetica Neue", Arial, sans-serif;
+
+  /* типографическая шкала */
+  --fs-hero: clamp(3.4rem, 8.4vw, 9.2rem);
+  --fs-h2: clamp(3.4rem, 9vw, 9.5rem);
+  --fs-h3: clamp(1.6rem, 2.6vw, 2.4rem);
+  --fs-lead: clamp(1.05rem, 1.3vw, 1.25rem);
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-micro: 0.72rem;
+  --lh-display: 0.86;
+  --track-micro: 0.14em;
+
+  /* сетка и отступы */
+  --container: 1440px;
+  --gutter: clamp(16px, 4vw, 56px);
+  --section-y: clamp(80px, 9vw, 140px);
+  --header-h: 72px;
+
+  /* формы */
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-card: 16px;
+  --r-pill: 999px;
+  --hairline: 1px solid var(--border);
+  --hairline-soft: 1px solid var(--border-soft);
+
+  /* движение */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 0.2s;
+  --dur: 0.45s;
+  --dur-slow: 0.9s;
+}
+
+@media (max-width: 899px) {
+  :root {
+    --header-h: 60px;
+  }
+}

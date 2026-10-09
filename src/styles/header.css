@@ -1,0 +1,233 @@
+/* Шапка и мобильное меню */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  height: var(--header-h);
+  transition: background-color var(--dur) var(--ease-out), backdrop-filter var(--dur);
+}
+.site-header::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: var(--border-soft);
+  opacity: 0;
+  transition: opacity var(--dur);
+}
+.site-header.is-scrolled {
+  background: rgb(5 6 7 / 0.82);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+.site-header.is-scrolled::after {
+  opacity: 1;
+}
+
+.site-header__inner {
+  height: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.site-header__logo {
+  flex: none;
+  display: block;
+}
+.site-header__logo .logo {
+  width: 120px;
+  height: auto;
+}
+
+.site-nav {
+  margin-left: auto;
+}
+.site-nav ul {
+  display: flex;
+  gap: clamp(16px, 2.2vw, 34px);
+}
+.site-nav a {
+  position: relative;
+  display: inline-block;
+  padding-block: 8px;
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  transition: color var(--dur-fast);
+}
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 1px;
+  background: var(--rec);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease-out);
+}
+.site-nav a:hover {
+  color: var(--text);
+}
+.site-nav a.is-active {
+  color: var(--text);
+}
+.site-nav a.is-active::after {
+  transform: scaleX(1);
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.site-header__progress {
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  overflow: hidden;
+}
+.site-header__progress span {
+  display: block;
+  height: 100%;
+  background: var(--rec);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.burger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  position: relative;
+  border-radius: 50%;
+}
+.burger span {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  height: 1.5px;
+  background: var(--text);
+  transition: transform var(--dur) var(--ease-out);
+}
+.burger span:first-child {
+  top: 18px;
+}
+.burger span:last-child {
+  top: 25px;
+  right: 18px;
+}
+
+@media (max-width: 1180px) {
+  .site-header__rec {
+    display: none;
+  }
+}
+@media (max-width: 1023px) {
+  .site-nav,
+  .site-header__cta {
+    display: none;
+  }
+  .burger {
+    display: block;
+  }
+  .site-header__actions {
+    margin-left: auto;
+  }
+}
+
+/* мобильное меню — нативный dialog */
+.mobile-menu {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0 var(--gutter) max(24px, env(safe-area-inset-bottom));
+  border: 0;
+  background: var(--bg);
+  color: var(--text);
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.mobile-menu[open] {
+  display: flex;
+  animation: menu-in 0.45s var(--ease-out);
+}
+.mobile-menu::backdrop {
+  background: rgb(0 0 0 / 0.6);
+}
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+.mobile-menu__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-h);
+  flex: none;
+}
+.mobile-menu__top .logo {
+  width: 108px;
+}
+.mobile-menu__list {
+  margin-top: clamp(24px, 8vh, 64px);
+  border-top: var(--hairline-soft);
+}
+.mobile-menu__list li {
+  border-bottom: var(--hairline-soft);
+  animation: menu-item 0.5s var(--ease-out) both;
+  animation-delay: calc(0.08s + var(--i) * 0.045s);
+}
+@keyframes menu-item {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+.mobile-menu__list a {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 0;
+  font-family: var(--font-display);
+  font-weight: 820;
+  font-size: clamp(2.4rem, 11vw, 4rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+.mobile-menu__list a[aria-current="true"] {
+  color: var(--text);
+}
+.mobile-menu__list a:not([aria-current="true"]) {
+  color: var(--text-2);
+}
+.mobile-menu__num {
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: var(--track-micro);
+  color: var(--text-3);
+  min-width: 2ch;
+}
+.mobile-menu__foot {
+  margin-top: auto;
+  padding-top: 32px;
+  display: grid;
+  gap: 18px;
+}

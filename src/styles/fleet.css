@@ -1,0 +1,421 @@
+/* Парк техники */
+
+.fleet {
+  background: linear-gradient(to bottom, var(--bg), #07080a 40%, var(--bg));
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: clamp(24px, 3.5vw, 40px);
+}
+
+.fleet-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(14px, 1.6vw, 24px);
+}
+.fleet-grid--all .fleet-card--featured {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.fleet-card {
+  min-width: 0;
+}
+.fleet-card__btn {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  border-radius: var(--r-card);
+  background: var(--surface);
+  border: var(--hairline-soft);
+  overflow: hidden;
+  transition: border-color var(--dur) var(--ease-out), transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.fleet-card__poster {
+  position: relative;
+  display: block;
+  aspect-ratio: 1122 / 1402;
+  overflow: hidden;
+  background: #0a0a0b;
+  flex: 1 1 auto;
+}
+.fleet-card--featured .fleet-card__poster {
+  aspect-ratio: auto;
+  min-height: 0;
+}
+.fleet-card__poster img,
+.fleet-card__poster .img-missing {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0%;
+  transition: transform 1.1s var(--ease-out), filter var(--dur) var(--ease-out);
+  filter: brightness(0.92);
+}
+.fleet-card__poster::after {
+  /* тонкий световой блик по краю — как подсветка витрины */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(5 6 7 / 0.55), transparent 22%);
+  pointer-events: none;
+}
+
+.fleet-card__meta {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px 16px;
+  border-top: var(--hairline-soft);
+}
+.fleet-card__num {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.6rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-3);
+  transition: color var(--dur-fast);
+}
+.fleet-card__name {
+  display: grid;
+  min-width: 0;
+}
+.fleet-card__title {
+  font-family: var(--font-display);
+  font-weight: 760;
+  font-size: 1.18rem;
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fleet-card__sub {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fleet-card__go {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: var(--hairline);
+  color: var(--text-2);
+  transition: background-color var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast), transform var(--dur) var(--ease-out);
+}
+.fleet-card__go svg {
+  width: 16px;
+  height: 16px;
+}
+
+.fleet-card__btn:hover,
+.fleet-card__btn:focus-visible {
+  border-color: var(--border);
+}
+.fleet-card__btn:hover .fleet-card__poster img,
+.fleet-card__btn:focus-visible .fleet-card__poster img {
+  transform: scale(1.025);
+  filter: brightness(1.04);
+}
+.fleet-card__btn:hover .fleet-card__num,
+.fleet-card__btn:focus-visible .fleet-card__num {
+  color: var(--rec);
+}
+.fleet-card__btn:hover .fleet-card__go,
+.fleet-card__btn:focus-visible .fleet-card__go {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+  transform: rotate(45deg);
+}
+.fleet-card__btn:focus-visible {
+  outline-offset: 4px;
+  border-radius: var(--r-card);
+}
+
+.fleet-card--featured .fleet-card__title {
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+}
+.fleet-card--featured .fleet-card__num {
+  font-size: clamp(1.8rem, 2.4vw, 2.4rem);
+}
+
+@media (max-width: 1100px) {
+  .fleet-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .fleet-grid--all .fleet-card--featured {
+    grid-column: span 2;
+  }
+}
+@media (max-width: 699px) {
+  .fleet-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .fleet-grid--all .fleet-card--featured {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+  .fleet-card--featured .fleet-card__poster {
+    aspect-ratio: 1122 / 1402;
+  }
+  .fleet-card__meta {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 10px 12px 12px;
+  }
+  .fleet-card__num {
+    font-size: 1.1rem;
+  }
+  .fleet-card__go {
+    display: none;
+  }
+  .fleet-card__title {
+    font-size: 1rem;
+    white-space: normal;
+  }
+  .fleet-card__sub {
+    white-space: normal;
+  }
+  .filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .filters::-webkit-scrollbar {
+    display: none;
+  }
+  .chip {
+    flex: none;
+  }
+}
+
+/* --- модальное окно --- */
+.fleet-modal {
+  width: min(1240px, calc(100vw - 32px));
+  max-width: none;
+  height: min(860px, calc(100vh - 48px));
+  max-height: none;
+  padding: 0;
+  border: var(--hairline);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--text);
+  overflow: hidden;
+}
+.fleet-modal[open] {
+  animation: modal-in 0.5s var(--ease-out);
+}
+.fleet-modal::backdrop {
+  background: rgb(2 3 4 / 0.82);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+}
+.fleet-modal__panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  height: 100%;
+  animation: panel-swap 0.45s var(--ease-out);
+}
+@keyframes panel-swap {
+  from {
+    opacity: 0.2;
+  }
+}
+.fleet-modal__media {
+  position: relative;
+  background: #070708;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.fleet-modal__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.fleet-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 22px clamp(20px, 3vw, 40px) 28px;
+  overflow-y: auto;
+  border-left: var(--hairline-soft);
+}
+.fleet-modal__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: -10px;
+}
+.fleet-modal__count {
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-micro);
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+.fleet-modal__count b {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text);
+  vertical-align: -0.15em;
+  margin-right: 4px;
+}
+.fleet-modal__title {
+  font-family: var(--font-display);
+  font-weight: 860;
+  font-size: clamp(2.4rem, 4.4vw, 4rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  margin-top: -6px;
+}
+.fleet-modal__subtitle {
+  margin-top: -12px;
+  color: var(--text-2);
+  font-size: 1.05rem;
+}
+.fleet-modal__facts {
+  display: grid;
+  border-top: var(--hairline-soft);
+}
+.fleet-modal__facts > div,
+.spec-list > div {
+  display: grid;
+  grid-template-columns: 9.5rem 1fr;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: var(--hairline-soft);
+  font-size: var(--fs-small);
+}
+.fleet-modal__facts dt,
+.spec-list dt {
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: var(--fs-micro);
+  padding-top: 2px;
+}
+.fleet-modal__desc {
+  color: var(--text-2);
+  max-width: 52ch;
+}
+.fleet-modal__block {
+  display: grid;
+  gap: 12px;
+}
+.fleet-modal__block h4 {
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-micro);
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 500;
+}
+.fleet-modal__block .muted {
+  font-size: var(--fs-small);
+  max-width: 48ch;
+}
+.fleet-modal__links a {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border-bottom: var(--hairline);
+}
+.fleet-modal__links svg {
+  width: 14px;
+  height: 14px;
+}
+.fleet-modal__actions {
+  margin-top: auto;
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.fleet-modal__nav {
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 899px) {
+  .fleet-modal {
+    width: 100vw;
+    height: 100%;
+    max-height: none;
+    border-radius: 0;
+    border: 0;
+  }
+  .fleet-modal__panel {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+    overflow-y: auto;
+  }
+  .fleet-modal__media {
+    height: min(62svh, 125vw);
+  }
+  .fleet-modal__body {
+    border-left: 0;
+    overflow: visible;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+  }
+  .fleet-modal__bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    margin: 0;
+    padding: 8px 8px 8px 16px;
+    background: linear-gradient(to bottom, rgb(5 6 7 / 0.85), transparent);
+  }
+  .fleet-modal__bar .icon-btn {
+    background: rgb(5 6 7 / 0.6);
+  }
+  .fleet-modal__actions {
+    position: sticky;
+    bottom: 0;
+    padding: 12px 0 4px;
+    background: linear-gradient(to top, var(--surface) 70%, transparent);
+  }
+  .fleet-modal__actions .btn {
+    flex: 1;
+  }
+  .fleet-modal__facts > div,
+  .spec-list > div {
+    grid-template-columns: 7.5rem 1fr;
+  }
+}
+
+@media (max-width: 899px) {
+  /* номер позиции уже есть на постере — на телефоне счётчик над фото не дублируем */
+  .fleet-modal__bar .fleet-modal__count {
+    visibility: hidden;
+  }
+}
