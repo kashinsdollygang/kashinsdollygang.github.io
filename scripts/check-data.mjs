@@ -22,7 +22,13 @@ FLEET.forEach((it, i) => {
 const ids = new Set(FLEET.map((i) => i.id));
 if (ids.size !== FLEET.length) problems.push("Повторяющиеся id в каталоге");
 
-for (const k of new Set([...SERVICES.map((s) => s.visual), ...MOTION_FRAMES.map((f) => f.image)])) {
+for (const f of MOTION_FRAMES.filter((x) => x.rig)) {
+  for (const n of ["base.webp", "boom.webp", "cam.webp", "rig.json"]) {
+    const file = `images/scenes/${f.rig}/${n}`;
+    if (!existsSync(pub(file))) problems.push(`Нет слоя анимации ${file}`);
+  }
+}
+for (const k of new Set([...SERVICES.map((s) => s.visual), ...MOTION_FRAMES.filter((f) => f.image).map((f) => f.image)])) {
   const img = sceneImage(k);
   for (const f of [img.src, img.srcSmall]) if (!existsSync(pub(f))) problems.push(`Нет кадра ${f}`);
 }

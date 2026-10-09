@@ -3,6 +3,7 @@ import { MOTION_FRAMES, MOTION_INTRO } from "../data/site.js";
 import { sceneImage } from "../data/services.js";
 import { gsap, REDUCED_MOTION } from "../lib/motion.js";
 import { RecIndicator } from "./Brand.jsx";
+import { JibRig } from "./JibRig.jsx";
 import { Viewfinder } from "./Viewfinder.jsx";
 
 const FPS = 24;
@@ -30,7 +31,7 @@ export function MotionScene() {
     mm.add(`(min-width: 900px) and (min-height: 560px) and (not ${REDUCED_MOTION})`, () => {
       el.classList.add("is-cinematic");
       const frames = gsap.utils.toArray(".motion__frame", el);
-      const imgs = frames.map((f) => f.querySelector("img"));
+      const imgs = frames.map((f) => f.querySelector(".motion__media"));
       const copies = gsap.utils.toArray(".motion__copy-item", el);
       const marker = el.querySelector(".motion__marker");
 
@@ -65,8 +66,8 @@ export function MotionScene() {
         .to(copies[0], { autoAlpha: 0, y: -40, duration: 0.15 }, 0.82)
         .to(frames[1], { autoAlpha: 1, duration: 0.18 }, 0.86)
         .to(copies[1], { autoAlpha: 1, y: 0, duration: 0.15 }, 0.95);
-      // кадр 2 — подъём: камера поднимается вместе со стрелой
-      tl.fromTo(imgs[1], { yPercent: 5, scale: 1.12 }, { yPercent: -4, scale: 1.06, duration: 1.1 }, 0.86);
+      // кадр 2 — масштаб: стрела сама ходит вверх-вниз (JibRig), камера сцены лишь чуть отъезжает
+      tl.fromTo(imgs[1], { scale: 1.06 }, { scale: 1, duration: 1.1 }, 0.86);
       tl.to(frames[1], { autoAlpha: 0, duration: 0.18 }, 1.82)
         .to(copies[1], { autoAlpha: 0, y: -40, duration: 0.15 }, 1.78)
         .to(frames[2], { autoAlpha: 1, duration: 0.18 }, 1.82)
@@ -91,11 +92,15 @@ export function MotionScene() {
       <div className="motion__stage">
         <div className="motion__frames">
           {MOTION_FRAMES.map((f) => {
-            const img = sceneImage(f.image);
+            const img = f.rig ? null : sceneImage(f.image);
             return (
               <figure className="motion__frame" key={f.id}>
                 <div className="motion__img-wrap">
-                  <img src={img.src} srcSet={`${img.srcSmall} 640w, ${img.src} 1074w`} sizes="(min-width: 900px) 70vw, 100vw" width={img.width} height={img.height} alt={f.caption} loading="lazy" decoding="async" />
+                  {f.rig ? (
+                    <JibRig className="motion__media" alt={f.alt ?? f.caption} />
+                  ) : (
+                    <img className="motion__media" src={img.src} srcSet={`${img.srcSmall} 640w, ${img.src} 1074w`} sizes="(min-width: 900px) 70vw, 100vw" width={img.width} height={img.height} alt={f.caption} loading="lazy" decoding="async" />
+                  )}
                 </div>
                 <figcaption className="motion__static-copy">
                   <span className="motion__index">{f.tool}</span>
