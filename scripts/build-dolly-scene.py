@@ -7,8 +7,8 @@
 Выход: public/images/scenes/dolly-scene/
   plate-{1672,1000}.webp — кадр без тележки и её отражения: места, которые открываются при движении, достроены
                            (свет/цвет — из соседних участков кадра, фактура — из присланного фона, рельсы — по их профилю);
-  dolly-{full,half}.webp — тележка из кадра без изменений; на месте маленьких колёс — окна;
-  wheel-{0..3}.webp      — маленькие колёса в их плоскости (круг) для вращения;
+  dolly-{full,half}.webp — тележка из кадра без изменений (колёса — исходные пиксели);
+  wheel-{0..3}.webp      — маска видимой части обода маленького колеса (в плоскости колеса) для бегущего блика;
   shimmer.webp           — блики мокрого пола (из самого кадра);
   haze.webp              — дым (бесшовный по горизонтали);
   scene.json             — геометрия в координатах кадра.
@@ -113,22 +113,11 @@ def main():
         mapy = (c[1] + v).astype(np.float32)
         tex = cv2.remap(A, mapx, mapy, cv2.INTER_LINEAR).astype(np.float32)
         vis = (cv2.remap(window.astype(np.uint8), mapx, mapy, cv2.INTER_NEAREST) > 0) & (rr <= R - 0.5)
-        bins = np.clip(rr.astype(int), 0, R)
-        prof = np.zeros((R + 1, 3), np.float32)
-        have = np.zeros(R + 1, bool)
-        for rb in range(R + 1):
-            sel = vis & (bins == rb)
-            if sel.sum() >= 3:
-                prof[rb] = np.median(tex[sel], axis=0)
-                have[rb] = True
-        idx = np.where(have)[0]
-        for rb in range(R + 1):
-            if not have[rb]:
-                prof[rb] = prof[idx[np.argmin(np.abs(idx - rb))]]
-        fill = prof[bins] + np.random.default_rng(10 + i).normal(0, 2.5, tex.shape)
-        out = np.where(vis[..., None], tex, fill).clip(0, 255).astype(np.uint8)
-        alpha = (np.clip((R - rr) * 1.2 + 0.5, 0, 1) * 255).astype(np.uint8)
-        wheels.append((np.dstack([cv2.cvtColor(out, cv2.COLOR_BGR2RGB), alpha]), c, a, b))
+        ring = vis & (rr >= 0.62 * R)
+        m = cv2.GaussianBlur(ring.astype(np.float32), (0, 0), 1.0)
+        out = np.full((size, size, 3), 255, np.uint8)
+        alpha = (np.clip(m, 0, 1) * 255).astype(np.uint8)
+        wheels.append((np.dstack([out, alpha]), c, a, b))
 
     # 3) чистая подложка
     F = cv2.dilate(dolly.astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (31, 31))) > 0
@@ -175,7 +164,6 @@ def main():
     # 4) слой тележки
     da = (dolly.astype(np.uint8) * 255)
     da = cv2.GaussianBlur(cv2.erode(da, np.ones((2, 2), np.uint8)), (0, 0), 0.8)
-    da[window] = 0
     ys, xs = np.where(da > 4)
     pad = 4
     bx0, bx1, by0, by1 = xs.min() - pad, xs.max() + pad + 1, ys.min() - pad, ys.max() + pad + 1

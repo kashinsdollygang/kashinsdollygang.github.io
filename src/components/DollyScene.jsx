@@ -8,8 +8,9 @@ import { gsap, REDUCED_MOTION } from "../lib/motion.js";
  *
  * Всё, что связано с тележкой (корпус, маленькие колёса, тени, отражение, блик на металле), выставляется в одном
  * onUpdate от одного значения x — без задержек и проскальзывания.
- *  - маленькие колёса (стоят на рельсе парой под углом, видны эллипсами): угол = путь / радиус; круг вращается
- *    внутри обёртки со scaleX = a/b. Большие колёса висят над рельсом и не вращаются;
+ *  - маленькие колёса (стоят на рельсе парой под углом, видны эллипсами) остаются исходными пикселями фото;
+ *    вращение показывает блик, бегущий по видимой части обода: угол = путь / радиус, в плоскости колеса
+ *    (обёртка со scaleX = a/b, маска — видимая часть обода). Большие колёса висят над рельсом и не вращаются;
  *  - контактная тень: плотная под колёсами и опорами, мягче и прозрачнее дальше от точек касания;
  *  - направленные тени от двух ламп (силуэт тележки, «положенный» на пол): плотность следует за яркостью лампы
  *    и расстоянием до неё; при разгоне/торможении — едва заметный наклон и изменение плотности;
@@ -33,7 +34,7 @@ export function DollyScene({ alt, className = "" }) {
     const q = (s) => gsap.utils.toArray(s, el);
     const one = (s) => el.querySelector(s);
     const cars = q(".ds__car");
-    const wheels = q(".ds__wheel img");
+    const wheels = q(".ds__glint");
     const sheen = one(".ds__sheen-light");
     const contact = q(".ds__contact");
     const ao = one(".ds__ao");
@@ -176,12 +177,16 @@ export function DollyScene({ alt, className = "" }) {
         <img className="ds__fill ds__shimmer" src={`${SRC}shimmer.webp${v}`} {...img} />
 
         <div className="ds__car">
-          {SCENE.wheels.map((w, i) => (
-            <span key={i} className="ds__wheel" style={{ left: pc(w.cx - w.d / 2), top: pc(w.cy - w.dh / 2), width: pc(w.d), height: pc(w.dh), transform: `scaleX(${w.k})` }}>
-              <img src={`${SRC}wheel-${i}.webp${v}`} {...img} />
-            </span>
-          ))}
           <img className="ds__dolly" style={box} {...dollySrc} width={D.px[0]} height={D.px[1]} {...img} />
+          {/* маленькие колёса — исходные пиксели фото; вращение показывает блик, бегущий по видимой части обода */}
+          {SCENE.wheels.map((w, i) => {
+            const m = `url("${SRC}wheel-${i}.webp${v}")`;
+            return (
+              <span key={i} className="ds__wheel" style={{ left: pc(w.cx - w.d / 2), top: pc(w.cy - w.dh / 2), width: pc(w.d), height: pc(w.dh), transform: `scaleX(${w.k})`, WebkitMaskImage: m, maskImage: m }}>
+                <span className="ds__glint" />
+              </span>
+            );
+          })}
           {/* блик ламп на металле: свет стоит на месте, тележка проезжает сквозь него */}
           <div className="ds__sheen" style={{ ...box, ...silhouette }}>
             <span className="ds__sheen-light" style={{ left: pc(-D.left / D.w), width: pc(1 / D.w) }} />
