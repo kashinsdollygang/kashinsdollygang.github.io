@@ -4,7 +4,9 @@
 
 Фото не перерисовывается. Скрипт разделяет его на три слоя по реальным узлам техники:
   base — фон, колонна, вилка и тележка (неподвижны); место, где была стрела, заполнено дымом фона;
-  boom — стрела с противовесом и кабелями (поворачивается вокруг оси на вилке колонны);
+  boom-c — корневая труба стрелы с противовесом (поворачивается вокруг оси на вилке колонны);
+  boom-b, boom-a — два выдвижных колена телескопа (среднее и переднее с головой); при складывании
+          уезжают назад по оси стрелы, одновременно, внутрь корневой трубы;
   cam  — голова с камерой (висит на конце стрелы и остаётся горизонтальной, как при выравнивании).
 На сайте слои двигает GSAP (src/components/JibRig.jsx). Это 2D-анимация фотографии, а не 3D-модель.
 
@@ -65,6 +67,31 @@ def layer(pmask):
     return rgba
 
 boom_rgba = layer(boom_p); cam_rgba = layer(cam_p)
+
+# Тело трубы стрелы тёмное на тёмном фоне — маска по разнице с фоном даёт там полупрозрачность.
+# Для телескопа колена должны быть непрозрачными (одно уходит внутрь другого), поэтому
+# внутри контура трубы (замер по фото: верхняя кромка y = 80 + 0.357·(x−560), толщина ~70 px)
+# альфа = 1. Пиксели фото не меняются, меняется только маска.
+def beam_top(x): return 80 + (x - 560) * 0.357
+BEAM = [(470, beam_top(470) - 2), (1000, beam_top(1000) - 2), (1000, beam_top(1000) + 72), (470, beam_top(470) + 72)]
+beam = cv2.GaussianBlur(poly_mask(BEAM).astype(np.float32) / 255, (0, 0), 1.0)
+boom_rgba[..., 3] = np.maximum(boom_rgba[..., 3], (beam * (boom_p > 0) * 255).astype(np.uint8))
+
+# Телескопическая стрела: корневая труба (C, у колонны) и два выдвижных колена.
+# A — переднее колено с головой (до первой муфты), B — среднее колено (между муфтами).
+# Разрез — прямые, перпендикулярные оси стрелы, по передним граням муфт.
+U = np.array([0.941, 0.338])            # направление оси стрелы: от головы к колонне
+S1 = np.array([770.0, 150.0])           # передняя грань муфты среднего колена
+S2 = np.array([975.0, 228.0])           # передняя грань муфты корневой трубы
+yy, xx = np.mgrid[0:H, 0:W]
+t1 = (xx - S1[0]) * U[0] + (yy - S1[1]) * U[1]
+t2 = (xx - S2[0]) * U[0] + (yy - S2[1]) * U[1]
+def part(mask):
+    out = boom_rgba.copy(); out[..., 3] = (out[..., 3] * mask).astype(np.uint8); return out
+seg_a = part(t1 < 0)
+seg_b = part((t1 >= 0) & (t2 < 0))
+seg_c = part(t2 >= 0)
+SEG_B_LEN = float(np.dot(S2 - S1, U))   # длина видимой части среднего колена
 base = clean.astype(np.uint8)
 
 # холст: обрезка по бокам и запас сверху (стрела уходит выше кадра)
@@ -77,6 +104,7 @@ def canvas_rgba(img):
     return np.vstack([np.zeros((PAD, W, 4), np.uint8), img])[:, X0:X1]
 
 base_c = canvas_rgb(base); boom_c = canvas_rgba(boom_rgba); cam_c = canvas_rgba(cam_rgba)
+seg_a_c = canvas_rgba(seg_a); seg_b_c = canvas_rgba(seg_b); seg_c_c = canvas_rgba(seg_c)
 CW, CH = base_c.shape[1], base_c.shape[0]
 Pc = (P[0] - X0, P[1] + PAD); Mc = (M[0] - X0, M[1] + PAD)
 
@@ -87,7 +115,12 @@ def save(arr, name, q):
     im = Image.fromarray(arr).resize((TW, th), Image.LANCZOS)
     im.save(OUT / name, "WEBP", quality=q, method=6)
 save(base_c, "base.webp", 84)
-save(boom_c, "boom.webp", 88)
+save(seg_a_c, "boom-a.webp", 88)
+save(seg_b_c, "boom-b.webp", 88)
+save(seg_c_c, "boom-c.webp", 88)
+old = OUT / "boom.webp"
+if old.exists():
+    old.unlink()
 save(cam_c, "cam.webp", 88)
 meta = {
     "width": TW, "height": th,
@@ -95,6 +128,10 @@ meta = {
     "mount": [round(Mc[0] / CW, 5), round(Mc[1] / CH, 5)],
     "aspect": [CW, CH],
     "range": [-14, 8],
+    # ось стрелы (единичный вектор, в пикселях холста) и ход колен при складывании, px холста:
+    # среднее колено уходит в корневую трубу, переднее — в среднее, одновременно.
+    "axis": [float(U[0]), float(U[1])],
+    "retract": {"b": round(SEG_B_LEN * 0.78, 1), "a": round(SEG_B_LEN * 0.78, 1)},
 }
 (OUT / "rig.json").write_text(json.dumps(meta, indent=2))
 print("jib rig:", meta)

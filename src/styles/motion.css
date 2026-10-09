@@ -256,7 +256,13 @@
   height: 100%;
   object-fit: fill;
 }
-.rig__boom,
+.rig__arm {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.rig__seg-a,
+.rig__seg-b,
 .rig__cam {
   will-change: transform;
 }

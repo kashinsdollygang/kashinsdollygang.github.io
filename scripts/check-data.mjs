@@ -23,7 +23,7 @@ const ids = new Set(FLEET.map((i) => i.id));
 if (ids.size !== FLEET.length) problems.push("Повторяющиеся id в каталоге");
 
 for (const f of MOTION_FRAMES.filter((x) => x.rig)) {
-  for (const n of ["base.webp", "boom.webp", "cam.webp", "rig.json"]) {
+  for (const n of ["base.webp", "boom-a.webp", "boom-b.webp", "boom-c.webp", "cam.webp", "rig.json"]) {
     const file = `images/scenes/${f.rig}/${n}`;
     if (!existsSync(pub(file))) problems.push(`Нет слоя анимации ${file}`);
   }
