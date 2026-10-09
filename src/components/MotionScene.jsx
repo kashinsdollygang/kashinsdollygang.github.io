@@ -4,6 +4,7 @@ import { sceneImage } from "../data/services.js";
 import { gsap, REDUCED_MOTION } from "../lib/motion.js";
 import { RecIndicator } from "./Brand.jsx";
 import { JibRig } from "./JibRig.jsx";
+import { RoninLoop } from "./RoninLoop.jsx";
 import { Viewfinder } from "./Viewfinder.jsx";
 
 const FPS = 24;
@@ -72,8 +73,8 @@ export function MotionScene() {
         .to(copies[1], { autoAlpha: 0, y: -40, duration: 0.15 }, 1.78)
         .to(frames[2], { autoAlpha: 1, duration: 0.18 }, 1.82)
         .to(copies[2], { autoAlpha: 1, y: 0, duration: 0.15 }, 1.91);
-      // кадр 3 — свобода: мягкий наезд
-      tl.fromTo(imgs[2], { scale: 1.16, xPercent: -2 }, { scale: 1.04, xPercent: 2, duration: 1.1 }, 1.82);
+      // кадр 3 — плавность: Ronin сам крутится (RoninLoop), сцена лишь чуть отъезжает
+      tl.fromTo(imgs[2], { scale: 1.04 }, { scale: 1, duration: 1.1 }, 1.82);
       tl.fromTo(marker, { scaleX: 0 }, { scaleX: 1, duration: tl.duration() }, 0);
 
       return () => el.classList.remove("is-cinematic");
@@ -92,12 +93,14 @@ export function MotionScene() {
       <div className="motion__stage">
         <div className="motion__frames">
           {MOTION_FRAMES.map((f) => {
-            const img = f.rig ? null : sceneImage(f.image);
+            const img = f.rig || f.video ? (f.image ? sceneImage(f.image) : null) : sceneImage(f.image);
             return (
               <figure className="motion__frame" key={f.id}>
                 <div className="motion__img-wrap">
                   {f.rig ? (
                     <JibRig className="motion__media" alt={f.alt ?? f.caption} />
+                  ) : f.video ? (
+                    <RoninLoop className="motion__media" alt={f.alt ?? f.caption} still={img} />
                   ) : (
                     <img className="motion__media" src={img.src} srcSet={`${img.srcSmall} 640w, ${img.src} 1074w`} sizes="(min-width: 900px) 70vw, 100vw" width={img.width} height={img.height} alt={f.caption} loading="lazy" decoding="async" />
                   )}
