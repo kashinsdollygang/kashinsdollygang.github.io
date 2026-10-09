@@ -69,7 +69,7 @@ export function JibRig({ alt, className = "" }) {
     const ctx = canvas.getContext("2d");
     const cableImg = new Image();
     cableImg.decoding = "async";
-    cableImg.src = `${SRC}cables.webp`;
+    cableImg.src = `${SRC}cables.webp?v=${RIG.version}`;
     let lastExt = -1;
     let lastPose = { phi: 0, ext: 0 };
     const redrawCables = (ext, force) => {
@@ -125,7 +125,7 @@ export function JibRig({ alt, className = "" }) {
   }, []);
 
   const layer = (name, cls) => (
-    <img className={`rig__layer ${cls}`} src={`${SRC}${name}.webp`} alt="" width={RIG.width} height={RIG.height} loading="lazy" decoding="async" />
+    <img className={`rig__layer ${cls}`} src={`${SRC}${name}.webp?v=${RIG.version}`} alt="" width={RIG.width} height={RIG.height} loading="lazy" decoding="async" />
   );
 
   return (

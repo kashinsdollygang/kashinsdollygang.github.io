@@ -173,5 +173,11 @@ meta = {
     "cables": cable_meta,
     "retract": {"b": round(SEG_B_LEN * 0.78, 1), "a": round(SEG_B_LEN * 0.78, 1)},
 }
+# версия слоёв для сброса кэша браузера: меняется при любом изменении файлов
+import hashlib
+h = hashlib.sha256()
+for n in ["base.webp", "boom-a.webp", "boom-b.webp", "boom-c.webp", "cables.webp", "cam.webp"]:
+    h.update((OUT / n).read_bytes())
+meta["version"] = h.hexdigest()[:10]
 (OUT / "rig.json").write_text(json.dumps(meta, indent=2))
 print("jib rig:", meta)
