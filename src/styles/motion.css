@@ -266,3 +266,7 @@
 .rig__cam {
   will-change: transform;
 }
+.rig__cables {
+  position: absolute;
+  pointer-events: none;
+}
