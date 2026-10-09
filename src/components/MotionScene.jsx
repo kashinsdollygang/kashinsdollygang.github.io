@@ -104,7 +104,7 @@ export function MotionScene() {
                 </div>
                 <figcaption className="motion__static-copy">
                   <span className="motion__index">{f.tool}</span>
-                  <span className="motion__word">{f.word}.</span>
+                  <span className="motion__word">{f.word}</span>
                   <span className="motion__text">{f.text}</span>
                   <span className="motion__caption">{f.caption}</span>
                 </figcaption>
@@ -131,7 +131,7 @@ export function MotionScene() {
               <span className="motion__index">
                 {String(i + 1).padStart(2, "0")} / {String(MOTION_FRAMES.length).padStart(2, "0")} <span className="motion__tool">{f.tool}</span>
               </span>
-              <span className="motion__word">{f.word}.</span>
+              <span className="motion__word">{f.word}</span>
               <span className="motion__text">{f.text}</span>
             </div>
           ))}
