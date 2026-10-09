@@ -4,7 +4,7 @@ import { sceneImage } from "../data/services.js";
 import { gsap, REDUCED_MOTION } from "../lib/motion.js";
 import { RecIndicator } from "./Brand.jsx";
 import { JibRig } from "./JibRig.jsx";
-import { RoninLoop } from "./RoninLoop.jsx";
+import { RoninRig } from "./RoninRig.jsx";
 import { Viewfinder } from "./Viewfinder.jsx";
 
 const FPS = 24;
@@ -93,14 +93,14 @@ export function MotionScene() {
       <div className="motion__stage">
         <div className="motion__frames">
           {MOTION_FRAMES.map((f) => {
-            const img = f.rig || f.video ? (f.image ? sceneImage(f.image) : null) : sceneImage(f.image);
+            const img = f.rig || f.video ? null : sceneImage(f.image);
             return (
               <figure className="motion__frame" key={f.id}>
                 <div className="motion__img-wrap">
                   {f.rig ? (
                     <JibRig className="motion__media" alt={f.alt ?? f.caption} />
                   ) : f.video ? (
-                    <RoninLoop className="motion__media" alt={f.alt ?? f.caption} still={img} />
+                    <RoninRig className="motion__media" alt={f.alt ?? f.caption} />
                   ) : (
                     <img className="motion__media" src={img.src} srcSet={`${img.srcSmall} 640w, ${img.src} 1074w`} sizes="(min-width: 900px) 70vw, 100vw" width={img.width} height={img.height} alt={f.caption} loading="lazy" decoding="async" />
                   )}

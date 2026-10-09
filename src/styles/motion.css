@@ -271,12 +271,29 @@
   pointer-events: none;
 }
 
-/* Ronin 2: зацикленное видео в кадре «Плавность» */
-.motion__img-wrap video.ronin-loop {
+/* Ronin 2 (RoninRig): слои фото; кольцо качается, камера неподвижна */
+.ronin {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  container-type: size;
+}
+.ronin__stage {
+  position: relative;
+  flex: none;
+  width: max(100%, calc(100cqh * 1074 / 1052));
+}
+.motion__img-wrap .ronin__layer,
+.motion.is-cinematic .motion__img-wrap .ronin__layer {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  display: block;
-  background: transparent;
-  mix-blend-mode: screen; /* чёрный фон видео сливается с фоном страницы */
+  object-fit: fill;
+}
+.ronin__ring {
+  will-change: transform;
 }

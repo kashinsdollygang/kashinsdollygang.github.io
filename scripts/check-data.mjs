@@ -32,7 +32,7 @@ for (const k of new Set([...SERVICES.map((s) => s.visual), ...MOTION_FRAMES.filt
   const img = sceneImage(k);
   for (const f of [img.src, img.srcSmall]) if (!existsSync(pub(f))) problems.push(`Нет кадра ${f}`);
 }
-for (const f of [HERO.image.src, HERO.image.srcSmall, "images/brand/kdg-logo-white.png", "images/brand/kdg-logo-white.webp", "video/ronin-2-loop.mp4", "video/ronin-2-loop.webm", "images/scenes/ronin-2-poster.webp"])
+for (const f of [HERO.image.src, HERO.image.srcSmall, "images/brand/kdg-logo-white.png", "images/brand/kdg-logo-white.webp"])
   if (!existsSync(pub(f))) problems.push(`Нет файла ${f}`);
 
 if (problems.length) {
