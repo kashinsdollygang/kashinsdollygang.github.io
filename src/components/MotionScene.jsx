@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
-import { MOTION_FRAMES } from "../data/site.js";
+import { MOTION_FRAMES, MOTION_INTRO } from "../data/site.js";
 import { sceneImage } from "../data/services.js";
 import { gsap, REDUCED_MOTION } from "../lib/motion.js";
 import { RecIndicator } from "./Brand.jsx";
@@ -83,8 +83,11 @@ export function MotionScene() {
   return (
     <section className="motion" ref={root} aria-labelledby="motion-title">
       <h2 className="sr-only" id="motion-title">
-        Механика движения: проезд, подъём, свобода
+        {MOTION_INTRO}: {MOTION_FRAMES.map((f) => f.word.toLowerCase()).join(", ")}
       </h2>
+      <p className="motion__intro" aria-hidden="true">
+        {MOTION_INTRO}
+      </p>
       <div className="motion__stage">
         <div className="motion__frames">
           {MOTION_FRAMES.map((f) => {
@@ -95,6 +98,7 @@ export function MotionScene() {
                   <img src={img.src} srcSet={`${img.srcSmall} 640w, ${img.src} 1074w`} sizes="(min-width: 900px) 70vw, 100vw" width={img.width} height={img.height} alt={f.caption} loading="lazy" decoding="async" />
                 </div>
                 <figcaption className="motion__static-copy">
+                  <span className="motion__index">{f.tool}</span>
                   <span className="motion__word">{f.word}.</span>
                   <span className="motion__text">{f.text}</span>
                   <span className="motion__caption">{f.caption}</span>
@@ -113,10 +117,14 @@ export function MotionScene() {
         />
 
         <div className="motion__copy" aria-hidden="true">
+          <span className="motion__kicker">
+            <span className="rec__dot rec__dot--static" />
+            {MOTION_INTRO}
+          </span>
           {MOTION_FRAMES.map((f, i) => (
             <div className="motion__copy-item" key={f.id}>
               <span className="motion__index">
-                {String(i + 1).padStart(2, "0")} / {String(MOTION_FRAMES.length).padStart(2, "0")}
+                {String(i + 1).padStart(2, "0")} / {String(MOTION_FRAMES.length).padStart(2, "0")} <span className="motion__tool">{f.tool}</span>
               </span>
               <span className="motion__word">{f.word}.</span>
               <span className="motion__text">{f.text}</span>
@@ -126,7 +134,7 @@ export function MotionScene() {
 
         <div className="motion__track" aria-hidden="true">
           {MOTION_FRAMES.map((f) => (
-            <span key={f.id}>{f.word}</span>
+            <span key={f.id}>{f.tool}</span>
           ))}
           <i className="motion__marker" />
         </div>

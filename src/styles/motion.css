@@ -114,8 +114,8 @@
   left: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter)));
   top: 50%;
   translate: 0 -50%;
-  width: min(40vw, 520px);
-  height: 60vh;
+  width: min(42vw, 620px);
+  height: 64vh;
   z-index: 2;
 }
 .motion__copy-item {
@@ -127,7 +127,8 @@
   gap: 18px;
 }
 .motion__copy-item .motion__word {
-  font-size: clamp(5rem, 10vw, 10rem);
+  /* самое длинное слово — «Присутствие.» — должно помещаться в колонку */
+  font-size: clamp(3.6rem, 6.4vw, 7.4rem);
   text-shadow: 0 2px 40px rgb(0 0 0 / 0.7);
 }
 .motion__copy-item .motion__text {
@@ -189,4 +190,42 @@
   .motion:not(.is-cinematic) .motion__word {
     font-size: clamp(2.8rem, 4.6vw, 4.6rem);
   }
+}
+
+/* подзаголовок сцены: идея, к которой относятся все три кадра */
+.motion__intro {
+  max-width: var(--container);
+  margin: 0 auto clamp(24px, 4vw, 40px);
+  padding-inline: var(--gutter);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.motion.is-cinematic .motion__intro {
+  display: none;
+}
+.motion__kicker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-micro);
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.motion__tool {
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px solid var(--border);
+  color: var(--text-2);
+  text-transform: uppercase;
+}
+.motion__static-copy .motion__index {
+  text-transform: uppercase;
 }
