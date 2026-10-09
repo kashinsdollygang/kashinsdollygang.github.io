@@ -3,6 +3,7 @@ import { MOTION_FRAMES, MOTION_INTRO } from "../data/site.js";
 import { sceneImage } from "../data/services.js";
 import { gsap, REDUCED_MOTION } from "../lib/motion.js";
 import { RecIndicator } from "./Brand.jsx";
+import { DollyScene } from "./DollyScene.jsx";
 import { JibRig } from "./JibRig.jsx";
 import { Viewfinder } from "./Viewfinder.jsx";
 
@@ -59,8 +60,8 @@ export function MotionScene() {
         },
       });
 
-      // кадр 1 — проезд: панорамирование вдоль рельсов
-      tl.fromTo(imgs[0], { xPercent: 5, scale: 1.12 }, { xPercent: -5, scale: 1.08, duration: 1 }, 0);
+      // кадр 1 — движение: тележка сама едет по рельсам (DollyScene), сцена лишь чуть смещается
+      tl.fromTo(imgs[0], { xPercent: 1.2, scale: 1.04 }, { xPercent: -1.2, scale: 1.01, duration: 1 }, 0);
       // переход к кадру 2
       tl.to(frames[0], { autoAlpha: 0, duration: 0.18 }, 0.86)
         .to(copies[0], { autoAlpha: 0, y: -40, duration: 0.15 }, 0.82)
@@ -96,7 +97,9 @@ export function MotionScene() {
             return (
               <figure className="motion__frame" key={f.id}>
                 <div className="motion__img-wrap">
-                  {f.rig ? (
+                  {f.rig === "dolly-scene" ? (
+                    <DollyScene className="motion__media" alt={f.alt ?? f.caption} />
+                  ) : f.rig ? (
                     <JibRig className="motion__media" alt={f.alt ?? f.caption} />
                   ) : (
                     <img className="motion__media" src={img.src} srcSet={`${img.srcSmall} 640w, ${img.src} 1074w`} sizes="(min-width: 900px) 70vw, 100vw" width={img.width} height={img.height} alt={f.caption} loading="lazy" decoding="async" />
