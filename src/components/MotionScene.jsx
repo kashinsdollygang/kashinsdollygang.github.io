@@ -4,6 +4,7 @@ import { sceneImage } from "../data/services.js";
 import { gsap, REDUCED_MOTION } from "../lib/motion.js";
 import { RecIndicator } from "./Brand.jsx";
 import { JibRig } from "./JibRig.jsx";
+import { RoninJib } from "./RoninJib.jsx";
 import { Viewfinder } from "./Viewfinder.jsx";
 
 const FPS = 24;
@@ -96,7 +97,9 @@ export function MotionScene() {
             return (
               <figure className="motion__frame" key={f.id}>
                 <div className="motion__img-wrap">
-                  {f.rig ? (
+                  {f.rig === "ronin-jib" ? (
+                    <RoninJib className="motion__media" alt={f.alt ?? f.caption} />
+                  ) : f.rig ? (
                     <JibRig className="motion__media" alt={f.alt ?? f.caption} />
                   ) : (
                     <img className="motion__media" src={img.src} srcSet={`${img.srcSmall} 640w, ${img.src} 1074w`} sizes="(min-width: 900px) 70vw, 100vw" width={img.width} height={img.height} alt={f.caption} loading="lazy" decoding="async" />
