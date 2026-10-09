@@ -249,3 +249,28 @@ a.channel:hover {
     grid-column: 1 / -1;
   }
 }
+
+/* один канал связи — крупная строка вместо сетки плиток */
+.channels--single:not(.channels--compact) {
+  grid-template-columns: minmax(0, 420px);
+}
+.channels--single:not(.channels--compact) .channel {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 16px;
+  min-height: 0;
+  padding: 18px 20px;
+}
+.channels--single:not(.channels--compact) .channel svg {
+  grid-row: span 2;
+  width: 26px;
+  height: 26px;
+  margin: 0;
+}
+.channels--single:not(.channels--compact) .channel__label {
+  font-size: 1rem;
+}
+.channels--single:not(.channels--compact) .channel__value {
+  font-size: var(--fs-small);
+  word-break: normal;
+}

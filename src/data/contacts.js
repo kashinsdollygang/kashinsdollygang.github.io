@@ -1,15 +1,9 @@
-// Контакты. Заполните реальные значения — ссылки и форма заявки включатся автоматически.
-// Пустое значение (null) = канал не показывается как ссылка, рядом пометка «скоро».
-//
-//   telegram:  имя пользователя без @, например "kashins_dolly"
-//   vk:        полный адрес, например "https://vk.com/…"
-//   email:     адрес почты
-//   phone:     номер в международном формате, например "+7 900 000-00-00"
+// Контакты. На сайте показывается только телефон.
+// Впишите номер в международном формате, например "+7 900 000-00-00" —
+// он станет кликабельным (звонок с телефона) в разделе «Контакты» и в подвале.
+// Пока значение null, рядом с телефоном написано «номер появится скоро».
 
 export const CONTACTS = {
-  telegram: null,
-  vk: null,
-  email: null,
   phone: null,
 };
 
@@ -17,9 +11,6 @@ export const CONTACTS = {
 export const PRIVACY_URL = null;
 
 export const CHANNELS = [
-  { id: "telegram", label: "Telegram", href: (v) => `https://t.me/${v}`, display: (v) => `@${v}` },
-  { id: "vk", label: "ВКонтакте", href: (v) => v, display: () => "vk.com" },
-  { id: "email", label: "Email", href: (v) => `mailto:${v}`, display: (v) => v },
   { id: "phone", label: "Телефон", href: (v) => `tel:${v.replace(/[^+\d]/g, "")}`, display: (v) => v },
 ];
 

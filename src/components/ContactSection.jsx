@@ -29,7 +29,7 @@ async function copyText(text) {
 
 export function ChannelList({ compact = false }) {
   return (
-    <ul className={`channels ${compact ? "channels--compact" : ""}`}>
+    <ul className={`channels ${compact ? "channels--compact" : ""} ${CHANNELS.length === 1 ? "channels--single" : ""}`}>
       {CHANNELS.map((c) => {
         const value = CONTACTS[c.id];
         const Icon = CHANNEL_ICONS[c.id];
@@ -45,7 +45,7 @@ export function ChannelList({ compact = false }) {
               <span className="channel channel--pending" title="Контакт скоро появится">
                 <Icon />
                 <span className="channel__label">{c.label}</span>
-                <span className="channel__value">скоро</span>
+                <span className="channel__value">{CHANNELS.length === 1 ? "номер появится скоро" : "скоро"}</span>
               </span>
             )}
           </li>
@@ -102,7 +102,9 @@ export function ContactSection() {
     }
     setStatus({
       tone: "warn",
-      text: "Онлайн-отправка пока не подключена, поэтому заявка не отправлена. Скопируйте текст — он пригодится, когда появятся контакты.",
+      text: CONTACTS.phone
+        ? `Онлайн-отправка не подключена, поэтому заявка не отправлена. Позвоните нам: ${CONTACTS.phone}. Текст заявки можно скопировать.`
+        : "Онлайн-отправка пока не подключена, поэтому заявка не отправлена. Скопируйте текст — он пригодится, когда появится телефон.",
       copy: text,
     });
   };
