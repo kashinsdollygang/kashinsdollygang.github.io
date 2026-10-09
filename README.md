@@ -2,7 +2,7 @@
 
 Одностраничный сайт: Главная → Парк техники → (сцена «Механика движения») → Услуги → Проекты → Команда → Контакты.
 
-Сайт: **https://desingerkino.github.io/KDG/** (публикуется автоматически через GitHub Actions при каждом push в `main`).
+Сайт: **https://kashinsdollygang.github.io/** (публикуется автоматически через GitHub Actions при каждом push в `main`).
 
 ## Стек
 
@@ -88,7 +88,7 @@ specifications: [{ label: "Высота подъёма колонны", value: "
 `.github/workflows/deploy.yml` собирает сайт и публикует `dist/` в GitHub Pages при каждом push в `main`.
 В настройках репозитория: **Settings → Pages → Source: GitHub Actions**.
 
-Пути в сборке относительные (`./assets/…`, `images/…`), поэтому сайт работает и по адресу `/KDG/`, и на собственном домене.
+Пути в сборке относительные (`./assets/…`, `images/…`), поэтому сайт работает и в корне адреса, и в подпапке, и на собственном домене.
 Если подключите свой домен, обновите `canonical`, `og:url`, `og:image` в `src/index.html` и адреса в `public/sitemap.xml`.
 
 ## Открытые вопросы по каталогу

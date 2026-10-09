@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://desingerkino.github.io/KDG/sitemap.xml
+Sitemap: https://kashinsdollygang.github.io/sitemap.xml
