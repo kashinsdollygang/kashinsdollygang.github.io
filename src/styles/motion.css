@@ -270,3 +270,84 @@
   position: absolute;
   pointer-events: none;
 }
+
+/* Тележка на рельсах (SecondoScene): слои одного холста */
+.sd {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  container-type: size;
+}
+.sd__stage {
+  position: relative;
+  flex: none;
+  width: max(100%, calc(100cqh * 1600 / 1504));
+  overflow: hidden;
+}
+.motion__img-wrap .sd__stage img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+}
+.motion__img-wrap .sd__fill {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.sd__lamps {
+  will-change: opacity;
+}
+.sd__haze-wrap {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+.sd__haze {
+  display: flex;
+  width: 200%;
+  height: 100%;
+  will-change: transform;
+}
+.motion__img-wrap .sd__haze img {
+  position: static;
+  width: 50%;
+  height: 100%;
+  flex: none;
+}
+.motion__img-wrap .sd__glints {
+  left: -3%;
+  width: 106%;
+  will-change: transform, opacity;
+}
+.sd__car {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.sd__shadow {
+  position: absolute;
+  height: 9%;
+  background: radial-gradient(ellipse at center, rgb(0 0 0 / 0.75) 0%, rgb(0 0 0 / 0.45) 38%, transparent 70%);
+  filter: blur(6px);
+}
+.sd__refl-clip {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(80.1% 0 0 0);
+  pointer-events: none;
+}
+.motion__img-wrap .sd__refl {
+  transform: scaleY(-1);
+  opacity: 0.5;
+  filter: blur(1.8px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 52%, rgb(0 0 0 / 0.9) 100%);
+  mask-image: linear-gradient(to bottom, transparent 52%, rgb(0 0 0 / 0.9) 100%);
+}
