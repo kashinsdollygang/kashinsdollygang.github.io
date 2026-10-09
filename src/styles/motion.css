@@ -270,31 +270,3 @@
   position: absolute;
   pointer-events: none;
 }
-
-/* Ronin 2 на подвесе (RoninJib): фон, стрела и подвес — слои одного холста */
-.rj {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  container-type: size;
-}
-.rj__stage {
-  position: relative;
-  flex: none;
-  width: max(100%, calc(100cqh * 1600 / 1504));
-}
-.motion__img-wrap .rj__layer,
-.motion.is-cinematic .motion__img-wrap .rj__layer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-}
-.rj__rig {
-  will-change: transform;
-  backface-visibility: hidden;
-}
