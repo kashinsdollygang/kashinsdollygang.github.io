@@ -24,7 +24,7 @@ if (ids.size !== FLEET.length) problems.push("Повторяющиеся id в �
 
 const RIG_FILES = {
   "jib-rig": ["base.webp", "boom-a.webp", "boom-b.webp", "boom-c.webp", "cables.webp", "cam.webp", "rig.json"],
-  "dolly-secondo": ["bg.webp", "lamps.webp", "glints-a.webp", "glints-b.webp", "haze-a.webp", "haze-b.webp", "dolly.webp", "scene.json"],
+  "dolly-rails": ["bg-1672.webp", "bg-1000.webp", "shimmer.webp", "rails.webp", "dolly-full.webp", "dolly-half.webp", "wheel-0.webp", "wheel-1.webp", "wheel-2.webp", "wheel-3.webp", "haze.webp", "scene.json"],
 };
 for (const f of MOTION_FRAMES.filter((x) => x.rig)) {
   for (const n of RIG_FILES[f.rig] ?? []) {

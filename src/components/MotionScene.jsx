@@ -4,7 +4,7 @@ import { sceneImage } from "../data/services.js";
 import { gsap, REDUCED_MOTION } from "../lib/motion.js";
 import { RecIndicator } from "./Brand.jsx";
 import { JibRig } from "./JibRig.jsx";
-import { SecondoScene } from "./SecondoScene.jsx";
+import { DollyRails } from "./DollyRails.jsx";
 import { Viewfinder } from "./Viewfinder.jsx";
 
 const FPS = 24;
@@ -60,7 +60,7 @@ export function MotionScene() {
         },
       });
 
-      // кадр 1 — движение: тележка сама едет по рельсам (SecondoScene), сцена лишь чуть смещается
+      // кадр 1 — движение: тележка сама едет по рельсам (DollyRails), сцена лишь чуть смещается
       tl.fromTo(imgs[0], { xPercent: 1.5, scale: 1.05 }, { xPercent: -1.5, scale: 1.01, duration: 1 }, 0);
       // переход к кадру 2
       tl.to(frames[0], { autoAlpha: 0, duration: 0.18 }, 0.86)
@@ -97,8 +97,8 @@ export function MotionScene() {
             return (
               <figure className="motion__frame" key={f.id}>
                 <div className="motion__img-wrap">
-                  {f.rig === "dolly-secondo" ? (
-                    <SecondoScene className="motion__media" alt={f.alt ?? f.caption} />
+                  {f.rig === "dolly-rails" ? (
+                    <DollyRails className="motion__media" alt={f.alt ?? f.caption} />
                   ) : f.rig ? (
                     <JibRig className="motion__media" alt={f.alt ?? f.caption} />
                   ) : (
