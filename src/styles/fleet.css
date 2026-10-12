@@ -1,34 +1,7 @@
 /* Парк техники */
 
-/* EQUIPMENT ARCHIVE: единственная светлая секция. Тёмные постеры лежат на светлом графитовом «столе»,
-   как печатные плакаты в архиве; тон переопределяется токенами, остальные стили работают без изменений.
-   --hairline* пересобираются здесь: var() внутри пользовательских свойств раскрывается там, где они объявлены (:root). */
 .fleet {
-  --bg: #e4e2dd;
-  --surface: #d5d3cd;
-  --elevated: #cbc9c3;
-  --border: #a29f98;
-  --border-soft: #bdbbb4;
-  --text: #0b0c0e;
-  --text-2: #33363c;
-  --text-3: #55595f;
-  --hairline: 1px solid var(--border);
-  --hairline-soft: 1px solid var(--border-soft);
-  background: var(--bg);
-  color: var(--text);
-}
-/* окно с подробностями остаётся тёмным, как кадр на мониторе */
-.fleet-modal {
-  --bg: #050607;
-  --surface: #0b0d10;
-  --elevated: #111418;
-  --border: #30343a;
-  --border-soft: #1b1e23;
-  --text: #f4f4f2;
-  --text-2: #a5a9ae;
-  --text-3: #80858b;
-  --hairline: 1px solid var(--border);
-  --hairline-soft: 1px solid var(--border-soft);
+  background: linear-gradient(to bottom, var(--bg), #07080a 40%, var(--bg));
 }
 
 .filters {

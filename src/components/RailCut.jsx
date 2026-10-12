@@ -7,14 +7,12 @@ import { gsap, REDUCED_MOTION, ScrollTrigger } from "../lib/motion.js";
  * по рельсам едет тележка-маркер, за ней идёт тёплая световая полоса, а координата X считается от положения
  * (позиция на рельсе, мм). Так прокрутка читается как один непрерывный проезд камеры от сцены к сцене.
  *
- * from / to — тон соседних секций ("dark" | "light"): верхняя половина стыка окрашена в фон предыдущей секции,
- * нижняя — следующей, рельсы лежат на границе.
  * Анимируются только transform и текст координаты; без обработчиков scroll — всё через ScrollTrigger.
  * При prefers-reduced-motion — неподвижные рельсы.
  */
 const RAIL_MM = 4800; // условная длина рельсового пути для координаты, мм
 
-export function RailCut({ from = "dark", to = "dark", label }) {
+export function RailCut({ label }) {
   const root = useRef(null);
   const cart = useRef(null);
   const light = useRef(null);
@@ -54,7 +52,7 @@ export function RailCut({ from = "dark", to = "dark", label }) {
   }, []);
 
   return (
-    <div className={`rail-cut rail-cut--${from}-${to}`} ref={root} aria-hidden="true">
+    <div className="rail-cut" ref={root} aria-hidden="true">
       <div className="rail-cut__rails">
         <i className="rail-cut__rail" />
         <i className="rail-cut__rail" />

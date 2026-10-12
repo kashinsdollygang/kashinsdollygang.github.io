@@ -50,9 +50,9 @@ export function App() {
       <Header />
       <main>
         <Hero />
-        <RailCut from="dark" to="light" label="Scene 01 → 02" />
+        <RailCut label="Scene 01 → 02" />
         <FleetSection />
-        <RailCut from="light" to="dark" label="Scene 02 → 03" />
+        <RailCut label="Scene 02 → 03" />
         <MotionScene />
         {SHOW_THREE_LAB ? <ThreeLab /> : null}
         <RailCut label="Scene 03 → 04" />

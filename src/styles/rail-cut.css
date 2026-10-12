@@ -1,4 +1,4 @@
-/* RAIL CUT — переход между секциями (см. MOTION.md) */
+/* RAIL CUT — переход между секциями (см. MOTION.md). Стык лежит на фоне секций, рельсы на линии пола. */
 
 .rail-cut {
   --rc-top: var(--bg);
@@ -10,17 +10,6 @@
   background: linear-gradient(to bottom, var(--rc-top) 50%, var(--rc-bottom) 50%);
   overflow: hidden;
   pointer-events: none;
-}
-.rail-cut--dark-light {
-  --rc-bottom: #e4e2dd;
-}
-.rail-cut--light-dark {
-  --rc-top: #e4e2dd;
-  --rc-line: #8d8b85;
-}
-.rail-cut--light-dark,
-.rail-cut--dark-light {
-  --rc-ink: #5b5f66;
 }
 
 /* два рельса на линии пола: сам стык секций */
@@ -53,12 +42,6 @@
   border-radius: 2px;
   background: var(--bg);
   will-change: transform;
-}
-.rail-cut--dark-light .rail-cut__cart {
-  background: linear-gradient(to bottom, var(--bg) 50%, #e4e2dd 50%);
-}
-.rail-cut--light-dark .rail-cut__cart {
-  background: linear-gradient(to bottom, #e4e2dd 50%, var(--bg) 50%);
 }
 .rail-cut__cart::before,
 .rail-cut__cart::after {
