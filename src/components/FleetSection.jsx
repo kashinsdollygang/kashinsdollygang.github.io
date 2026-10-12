@@ -63,11 +63,26 @@ export function FleetSection() {
       const cards = grid.current.querySelectorAll("[data-fleet-card]");
       // opacity (не visibility), чтобы карточки оставались доступными с клавиатуры до появления
       gsap.set(cards, { opacity: 0, y: 40, clipPath: "inset(12% 0% 0% 0%)" });
+      // Technical Archive: после постера по очереди раскрываются номер позиции, название и подпись
+      const parts = (c) => [c.querySelector(".fleet-card__num"), c.querySelector(".fleet-card__title"), c.querySelector(".fleet-card__sub")];
+      cards.forEach((c) => {
+        const [num, title, sub] = parts(c);
+        gsap.set(num, { opacity: 0, x: -14 });
+        gsap.set([title, sub], { opacity: 0, clipPath: "inset(0% 100% 0% 0%)" });
+      });
       ScrollTrigger.batch(cards, {
         start: "top 92%",
         once: true,
-        onEnter: (batch) =>
-          gsap.to(batch, { opacity: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 1, stagger: 0.08, ease: "power3.out", overwrite: true }),
+        onEnter: (batch) => {
+          gsap.to(batch, { opacity: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 1, stagger: 0.08, ease: "power3.out", overwrite: true });
+          batch.forEach((c, i) => {
+            const [num, title, sub] = parts(c);
+            const at = 0.35 + i * 0.08;
+            gsap.to(num, { opacity: 1, x: 0, duration: 0.5, delay: at, ease: "power3.out" });
+            gsap.to(title, { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, delay: at + 0.08, ease: "power3.out" });
+            gsap.to(sub, { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, delay: at + 0.2, ease: "power3.out" });
+          });
+        },
       });
     });
     return () => mm.revert();
