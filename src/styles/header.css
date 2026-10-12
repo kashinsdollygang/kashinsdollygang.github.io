@@ -17,7 +17,7 @@
   transition: opacity var(--dur);
 }
 .site-header.is-scrolled {
-  background: rgb(5 6 7 / 0.82);
+  background: rgb(5 6 7 / 0.92);
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
   backdrop-filter: blur(14px) saturate(1.2);
 }

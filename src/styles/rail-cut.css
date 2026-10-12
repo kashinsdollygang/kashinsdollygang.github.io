@@ -1,0 +1,101 @@
+/* RAIL CUT — переход между секциями (см. MOTION.md). Стык лежит на фоне секций, рельсы на линии пола. */
+
+.rail-cut {
+  --rc-top: var(--bg);
+  --rc-bottom: var(--bg);
+  --rc-line: #3b4047;
+  --rc-ink: var(--text-3);
+  position: relative;
+  height: clamp(56px, 6vw, 84px);
+  background: linear-gradient(to bottom, var(--rc-top) 50%, var(--rc-bottom) 50%);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* два рельса на линии пола: сам стык секций */
+.rail-cut__rails {
+  position: absolute;
+  inset: 0;
+}
+.rail-cut__rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--rc-line);
+}
+.rail-cut__rail:first-of-type {
+  top: calc(50% - 5px);
+}
+.rail-cut__rail:nth-of-type(2) {
+  top: calc(50% + 4px);
+}
+
+/* тележка-маркер: короткая рельсовая «каретка» между рельсами */
+.rail-cut__cart {
+  position: absolute;
+  left: 0;
+  top: calc(50% - 9px);
+  width: 34px;
+  height: 18px;
+  border: 1px solid var(--rec);
+  border-radius: 2px;
+  background: var(--bg);
+  will-change: transform;
+}
+.rail-cut__cart::before,
+.rail-cut__cart::after {
+  /* два маленьких контактных колеса */
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--rec);
+}
+.rail-cut__cart::before {
+  left: 5px;
+}
+.rail-cut__cart::after {
+  right: 5px;
+}
+
+/* световая полоса за тележкой: направленный тёплый свет вдоль рельсов */
+.rail-cut__light {
+  position: absolute;
+  left: 0;
+  top: calc(50% - 7px);
+  width: clamp(120px, 22vw, 340px);
+  height: 14px;
+  background: radial-gradient(closest-side, rgb(217 154 91 / 0.55), rgb(217 154 91 / 0.12) 60%, transparent);
+  will-change: transform;
+}
+
+.rail-cut__meta {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 6px;
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-micro);
+  text-transform: uppercase;
+  color: var(--rc-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 699px) {
+  .rail-cut {
+    height: 48px;
+  }
+  .rail-cut__label {
+    display: none;
+  }
+  .rail-cut__meta {
+    justify-content: flex-end;
+  }
+}

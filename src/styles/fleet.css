@@ -68,6 +68,29 @@
   pointer-events: none;
 }
 
+/* световой скан: по наведению полоса света один раз проходит по постеру слева направо, как луч по металлу */
+.fleet-card__poster::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -10%;
+  bottom: -10%;
+  left: 0;
+  width: 34%;
+  background: linear-gradient(to right, transparent, rgb(255 236 205 / 0.3) 50%, transparent);
+  transform: translateX(-120%) skewX(-16deg);
+  opacity: 0;
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .fleet-card__btn:hover .fleet-card__poster::before,
+  .fleet-card__btn:focus-visible .fleet-card__poster::before {
+    opacity: 1;
+    transform: translateX(380%) skewX(-16deg);
+    transition: transform 1.15s var(--ease-in-out), opacity 0.2s;
+  }
+}
+
 .fleet-card__meta {
   display: grid;
   grid-template-columns: auto 1fr auto;

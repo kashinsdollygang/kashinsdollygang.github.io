@@ -22,6 +22,18 @@ export function Hero() {
         }
         // Титульная сцена: логотип → REC → заголовок → техника → подпись и кнопки → свет.
         const tl = gsap.timeline({ defaults: { ease: "power3.out" }, onComplete: () => el.classList.add("is-ready") });
+        // повторный визит — сокращённое интро; любое действие посетителя ускоряет его, а не заставляет ждать
+        let seen = false;
+        try {
+          seen = localStorage.getItem("kdg:intro-seen") === "1";
+          localStorage.setItem("kdg:intro-seen", "1");
+        } catch {
+          /* хранилище недоступно — показываем обычное интро */
+        }
+        if (seen) tl.timeScale(2.4);
+        const skip = () => tl.timeScale(6);
+        const skipEvents = ["wheel", "touchstart", "keydown", "pointerdown"];
+        skipEvents.forEach((e) => window.addEventListener(e, skip, { once: true, passive: true }));
         tl.from(document.querySelector("[data-intro='header']"), { autoAlpha: 0, y: -12, duration: 0.6 }, 0)
           .from([".hero__eyebrow", ".hero__logo"], { autoAlpha: 0, y: 14, duration: 0.8, stagger: 0.08 }, 0.15)
           .from(".hero__rec", { autoAlpha: 0, duration: 0.3 }, 0.55)
@@ -50,6 +62,7 @@ export function Hero() {
             scrollTrigger: { trigger: el, start: "35% top", end: "bottom top", scrub: true },
           });
         }
+        return () => skipEvents.forEach((e) => window.removeEventListener(e, skip));
       },
       el,
     );

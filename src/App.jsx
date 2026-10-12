@@ -11,6 +11,7 @@ import { TeamSection } from "./components/TeamSection.jsx";
 import { ThreeLab } from "./components/ThreeLab.jsx";
 import { isThreeLabEnabled } from "./data/three.js";
 import { gsap, REDUCED_MOTION } from "./lib/motion.js";
+import { RailCut } from "./components/RailCut.jsx";
 
 // тестовая 3D-сцена — только по ?lab=3d (см. src/data/three.js)
 const SHOW_THREE_LAB = typeof window !== "undefined" && isThreeLabEnabled();
@@ -49,12 +50,18 @@ export function App() {
       <Header />
       <main>
         <Hero />
+        <RailCut label="Scene 01 → 02" />
         <FleetSection />
+        <RailCut label="Scene 02 → 03" />
         <MotionScene />
         {SHOW_THREE_LAB ? <ThreeLab /> : null}
+        <RailCut label="Scene 03 → 04" />
         <ServicesSection />
+        <RailCut label="Scene 04 → 05" />
         <ProjectsSection />
+        <RailCut label="Scene 05 → 06" />
         <TeamSection />
+        <RailCut label="Scene 06 → 07" />
         <ContactSection />
       </main>
       <Footer />
