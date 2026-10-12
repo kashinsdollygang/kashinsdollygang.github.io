@@ -121,7 +121,11 @@ export function JibRig({ alt, className = "" }) {
         tl.kill();
       };
     });
-    return () => mm.revert();
+    return () => {
+      // отложенная загрузка кабелей не должна рисовать в canvas размонтированного компонента
+      cableImg.onload = null;
+      mm.revert();
+    };
   }, []);
 
   const layer = (name, cls) => (

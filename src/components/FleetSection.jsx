@@ -1,6 +1,6 @@
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { FLEET, FLEET_CATEGORIES } from "../data/fleet.js";
-import { gsap, REDUCED_MOTION, ScrollTrigger } from "../lib/motion.js";
+import { gsap, queueRefresh, REDUCED_MOTION, ScrollTrigger } from "../lib/motion.js";
 import { SectionHead } from "./Brand.jsx";
 import { FleetCard } from "./FleetCard.jsx";
 import { FleetModal } from "./FleetModal.jsx";
@@ -59,7 +59,7 @@ export function FleetSection() {
   // Появление карточек — как раскладка постеров. Один раз, без повторов при прокрутке назад.
   useLayoutEffect(() => {
     const mm = gsap.matchMedia();
-    mm.add(`not ${REDUCED_MOTION}`, () => {
+    mm.add(`not ${REDUCED_MOTION}`, (context) => {
       const cards = grid.current.querySelectorAll("[data-fleet-card]");
       // opacity (не visibility), чтобы карточки оставались доступными с клавиатуры до появления
       gsap.set(cards, { opacity: 0, y: 40, clipPath: "inset(12% 0% 0% 0%)" });
@@ -70,21 +70,22 @@ export function FleetSection() {
         gsap.set(num, { opacity: 0, x: -14 });
         gsap.set([title, sub], { opacity: 0, clipPath: "inset(0% 100% 0% 0%)" });
       });
-      ScrollTrigger.batch(cards, {
-        start: "top 92%",
-        once: true,
-        onEnter: (batch) => {
-          gsap.to(batch, { opacity: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 1, stagger: 0.08, ease: "power3.out", overwrite: true });
-          batch.forEach((c, i) => {
-            const [num, title, sub] = parts(c);
-            const at = 0.35 + i * 0.08;
-            gsap.to(num, { opacity: 1, x: 0, duration: 0.5, delay: at, ease: "power3.out" });
-            gsap.to(title, { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, delay: at + 0.08, ease: "power3.out" });
-            gsap.to(sub, { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, delay: at + 0.2, ease: "power3.out" });
-          });
-        },
+      // onEnter срабатывает позже, уже после выполнения этой функции: context.add записывает
+      // созданные в нём твины в контекст, и mm.revert() при смене фильтра их тоже откатывает.
+      context.add("reveal", (batch) => {
+        gsap.to(batch, { opacity: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 1, stagger: 0.08, ease: "power3.out", overwrite: true });
+        batch.forEach((c, i) => {
+          const [num, title, sub] = parts(c);
+          const at = 0.35 + i * 0.08;
+          gsap.to(num, { opacity: 1, x: 0, duration: 0.5, delay: at, ease: "power3.out" });
+          gsap.to(title, { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, delay: at + 0.08, ease: "power3.out" });
+          gsap.to(sub, { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, delay: at + 0.2, ease: "power3.out" });
+        });
       });
+      ScrollTrigger.batch(cards, { start: "top 92%", once: true, onEnter: context.reveal });
     });
+    // Фильтр меняет высоту сетки: ниже лежащие триггеры (MotionScene, Rail Cut) нужно пересчитать.
+    queueRefresh();
     return () => mm.revert();
   }, [filter]);
 

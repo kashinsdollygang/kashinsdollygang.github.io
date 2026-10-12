@@ -4,6 +4,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.defaults({ ease: "power3.out", duration: 0.9 });
+// На touch-устройствах адресная строка меняет высоту окна при прокрутке: без этого флага
+// каждый такой «ресайз» пересчитывает позиции, и закреплённая сцена дёргается (gsap.com/docs/v3/Plugins/ScrollTrigger/static.config()).
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 export { gsap, ScrollTrigger };
 
